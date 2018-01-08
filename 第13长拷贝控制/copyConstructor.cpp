@@ -1,0 +1,29 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+class Sales_data {
+public:
+	//显示声明定义编译器会自动为类合成的拷贝构造函数
+	Sales_data(const Sales_data& s) : bookNo(s.bookNo),units_sold(s.units_sold){
+
+	}
+
+	Sales_data(string no, int sold) : bookNo(no), units_sold(sold) {}
+private:
+	string bookNo;//类 类型成员
+	int units_sold = 0;//普通类型
+};
+
+
+
+
+void main() {
+	Sales_data sd1("123",90);
+	Sales_data sd2 = sd1;//此时就会调用类的拷贝构造函数进行拷贝初始化
+	
+
+
+
+	system("pause");
+}
