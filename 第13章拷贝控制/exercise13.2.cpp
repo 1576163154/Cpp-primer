@@ -9,7 +9,7 @@ class HasPtr {
 public:
 	HasPtr() = default;
 	HasPtr(string& s) : ps( new string(s)), i(0) {}
-	HasPtr(const HasPtr& m) : ps(m.ps),i(m.i){}
+	HasPtr(const HasPtr& m) : ps(new string(*m.ps)),i(m.i){}
 	//拷贝赋值运算符
 	HasPtr& operator=(const HasPtr& hp) {
 		//需考虑到自赋值的情况
