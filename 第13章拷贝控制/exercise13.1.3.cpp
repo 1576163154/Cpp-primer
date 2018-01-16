@@ -1,26 +1,26 @@
-#include<string>
+ï»¿#include<string>
 #include<iostream>
 using namespace std;
-//13.12 Îö¹¹º¯Êıµ÷ÓÃ´ÎÊı
+//13.12 ææ„å‡½æ•°è°ƒç”¨æ¬¡æ•°
 static int i = 0;
 class Sales_data {
 private:
 	string book;
 public:
-	//Sales_data() = default;//ÈÃ±àÒëÆ÷ºÏ³ÉÄ¬ÈÏ¹¹Ôìº¯Êı£¬¼´Ê¹ÓĞÆäËû¹¹Ôìº¯Êı
+	//Sales_data() = default;//è®©ç¼–è¯‘å™¨åˆæˆé»˜è®¤æ„é€ å‡½æ•°ï¼Œå³ä½¿æœ‰å…¶ä»–æ„é€ å‡½æ•°
 	Sales_data() {}
 	Sales_data(const string& s) : book(s) {}
 	Sales_data(const Sales_data& sd) : book(sd.book) {
 		
 	}
-	//·µ»ØÖµ³£Á¿£¬º¯Êı²»ÄÜĞŞ¸Ä³ÉÔ±
+	//è¿”å›å€¼å¸¸é‡ï¼Œå‡½æ•°ä¸èƒ½ä¿®æ”¹æˆå‘˜
 	const string isbn() const {
 		return book;
 	}
 
 	~Sales_data() {
-		i++;//¼ÇÂ¼
-		cout << "µÚ " << i << " ´Îµ÷ÓÃÎö¹¹º¯Êı£¡" << endl;
+		i++;//è®°å½•
+		cout << "ç¬¬ " << i << " æ¬¡è°ƒç”¨ææ„å‡½æ•°ï¼" << endl;
 	}
 
 };
@@ -39,8 +39,8 @@ void main() {
 	system("pause");
 }
 
-//Õû¸ö³ÌĞòÖĞ¹²¼Æ½øĞĞÁË5´ÎÎö¹¹
-//ÔÚº¯ÊıfcnÖĞ Îö¹¹3´Î£¬·Ö±ğÊÇ accum,item1,item2¶ÔÏó£¬transÊÇÒıÓÃ
-//×îºó½áÊøÊ±  Îö¹¹2´Î£¬one£¬two
+//æ•´ä¸ªç¨‹åºä¸­å…±è®¡è¿›è¡Œäº†5æ¬¡ææ„
+//åœ¨å‡½æ•°fcnä¸­ ææ„3æ¬¡ï¼Œåˆ†åˆ«æ˜¯ accum,item1,item2å¯¹è±¡ï¼Œtransæ˜¯å¼•ç”¨
+//æœ€åç»“æŸæ—¶  ææ„2æ¬¡ï¼Œoneï¼Œtwo
 
 

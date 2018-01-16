@@ -1,18 +1,18 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<string>
 using namespace std;
 
 class Sales_data {
 public:
-	//ÏÔÊ¾ÉùÃ÷¶¨Òå±àÒëÆ÷»á×Ô¶¯ÎªÀàºÏ³ÉµÄ¿½±´¹¹Ôìº¯Êı
+	//æ˜¾ç¤ºå£°æ˜å®šä¹‰ç¼–è¯‘å™¨ä¼šè‡ªåŠ¨ä¸ºç±»åˆæˆçš„æ‹·è´æ„é€ å‡½æ•°
 	Sales_data(const Sales_data& s) : bookNo(s.bookNo),units_sold(s.units_sold){
 
 	}
 
 	Sales_data(string no, int sold) : bookNo(no), units_sold(sold) {}
 private:
-	string bookNo;//Àà ÀàĞÍ³ÉÔ±
-	int units_sold = 0;//ÆÕÍ¨ÀàĞÍ
+	string bookNo;//ç±» ç±»å‹æˆå‘˜
+	int units_sold = 0;//æ™®é€šç±»å‹
 };
 
 
@@ -26,12 +26,12 @@ Sales_data func2(Sales_data& sd) {
 
 void main() {
 	Sales_data sd1("123",90);
-	Sales_data sd2 = sd1;//´ËÊ±¾Í»áµ÷ÓÃÀàµÄ¿½±´¹¹Ôìº¯Êı½øĞĞ¿½±´³õÊ¼»¯
+	Sales_data sd2 = sd1;//æ­¤æ—¶å°±ä¼šè°ƒç”¨ç±»çš„æ‹·è´æ„é€ å‡½æ•°è¿›è¡Œæ‹·è´åˆå§‹åŒ–
 	
-	func(sd1);//×÷ÎªĞÎ²Î£¨·ÇÒıÓÃ´«Èëº¯ÊıÍ¬Ñù»á
+	func(sd1);//ä½œä¸ºå½¢å‚ï¼ˆéå¼•ç”¨ä¼ å…¥å‡½æ•°åŒæ ·ä¼š
 
-	//ÕâÕıºÃ¿ÉÒÔ½âÊÍÎªºÎ¿½±´¹¹Ôìº¯Êı±ØĞë´«Èë ÒıÓÃÀàĞÍ£¬Èô´«ÈëĞÎ²ÎÔò½øÈëËÀÑ­»·
+	//è¿™æ­£å¥½å¯ä»¥è§£é‡Šä¸ºä½•æ‹·è´æ„é€ å‡½æ•°å¿…é¡»ä¼ å…¥ å¼•ç”¨ç±»å‹ï¼Œè‹¥ä¼ å…¥å½¢å‚åˆ™è¿›å…¥æ­»å¾ªç¯
 
-	func2(sd2);//×÷Îª·µ»ØÖµÊ±Ò²»á
+	func2(sd2);//ä½œä¸ºè¿”å›å€¼æ—¶ä¹Ÿä¼š
 	
 }

@@ -1,8 +1,8 @@
-#include<string>
+ï»¿#include<string>
 using namespace std;
 class Foo {
 public:
-	//ÏÔÊ¾ÉùÃ÷¶¨Òå£¬±àÒëÆ÷»áÎªÎÒÃÇºÏ³ÉµÄÄ¬ÈÏ¸³ÖµÔËËã·û
+	//æ˜¾ç¤ºå£°æ˜å®šä¹‰ï¼Œç¼–è¯‘å™¨ä¼šä¸ºæˆ‘ä»¬åˆæˆçš„é»˜è®¤èµ‹å€¼è¿ç®—ç¬¦
 	Foo(int o, string n) : one(o),name(n){
 
 	}
@@ -19,8 +19,8 @@ private:
 
 void main() {
 	Foo one, two(2, "lala");
-	one = two;//Á½¸ö¶ÔÏó¸³Öµ²Ù×÷Ê±µ÷ÓÃ ¿½±´¸³ÖµÔËËã·û
+	one = two;//ä¸¤ä¸ªå¯¹è±¡èµ‹å€¼æ“ä½œæ—¶è°ƒç”¨ æ‹·è´èµ‹å€¼è¿ç®—ç¬¦
 	Foo three;
-	three.operator=(two);//ÉÏÊö´úÂë¿ÉĞ´Îª ´¿´âµÄº¯Êıµ÷ÓÃ
+	three.operator=(two);//ä¸Šè¿°ä»£ç å¯å†™ä¸º çº¯ç²¹çš„å‡½æ•°è°ƒç”¨
 
 }
