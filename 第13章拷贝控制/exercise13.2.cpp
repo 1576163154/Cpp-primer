@@ -1,26 +1,30 @@
-#include<iostream>
+ï»¿#include<iostream>
 #include<string>
 #include<memory>
 #include<vector>
+#include<algorithm>
 using namespace std;
 
-//ĞĞÎªÏñÖµµÄÀà£¬ÆÕÍ¨Ö¸Õë
+//è¡Œä¸ºåƒå€¼çš„ç±»ï¼Œæ™®é€šæŒ‡é’ˆ
 class HasPtr {
 public:
 	HasPtr() = default;
 	HasPtr(string& s) : ps( new string(s)), i(0) {}
 	HasPtr(const HasPtr& m) : ps(new string(*m.ps)),i(m.i){}
-	//¿½±´¸³ÖµÔËËã·û
+	//æ‹·è´èµ‹å€¼è¿ç®—ç¬¦
 	HasPtr& operator=(const HasPtr& hp) {
-		//Ğè¿¼ÂÇµ½×Ô¸³ÖµµÄÇé¿ö
-		//auto tmpPtr = hp.ps;//ÕâÑùĞ´tmpPtrºÍhp.psµØÖ·ÖµÏàÍ¬
-		auto tmpPtr2 = new string(*hp.ps);//ÕâÑùĞ´tmpPtr2Óëhp.psÄÚ´æµØÖ·²»Í¬£¬µ«µØÖ·ÉÏµÄÖµÍ¬
-		delete ps;//ÊÍ·ÅÔ­ÏÈpsÕ¼ÓÃµÄÄÚ´æ
+		//éœ€è€ƒè™‘åˆ°è‡ªèµ‹å€¼çš„æƒ…å†µ
+		//auto tmpPtr = hp.ps;//è¿™æ ·å†™tmpPtrå’Œhp.psåœ°å€å€¼ç›¸åŒ
+		auto tmpPtr2 = new string(*hp.ps);//è¿™æ ·å†™tmpPtr2ä¸hp.pså†…å­˜åœ°å€ä¸åŒï¼Œä½†åœ°å€ä¸Šçš„å€¼åŒ
+		delete ps;//é‡Šæ”¾åŸå…ˆpså ç”¨çš„å†…å­˜
 		ps = tmpPtr2;
 		i = hp.i;
 		return *this;
 
 	}
+	
+	friend void swap(HasPtr&,HasPtr&);//friend ç¡®ä¿è¯¥æ–¹æ³•èƒ½è®¿é—®privateæˆå‘˜
+	
 	~HasPtr() {
 		delete ps;
 	}
@@ -29,7 +33,13 @@ private:
 	int i;
 };
 
-//ĞĞÎªÏñÖµµÄÀà£¬ÖÇÄÜÖ¸Õë
+inline void swap(HasPtr& one,HasPtr& two){
+	using std::swap;
+	swap(one.ps,two.ps);//äº¤æ¢æŒ‡é’ˆ
+	swap(one.i,two.i);
+}
+
+//è¡Œä¸ºåƒå€¼çš„ç±»ï¼Œæ™ºèƒ½æŒ‡é’ˆ
 class StrBlob {
 	//StrBlob() = default;
 	StrBlob() : data(make_shared<vector<string>>()) {}
@@ -38,7 +48,7 @@ class StrBlob {
 		data = sb.data;
 		return *this;
 	}
-	//²»ÔÙĞèÒªÎö¹¹º¯Êı£¬ÖÇÄÜÖ¸Õë»á×Ô¶¯ÊÍ·Å
+	//ä¸å†éœ€è¦ææ„å‡½æ•°ï¼Œæ™ºèƒ½æŒ‡é’ˆä¼šè‡ªåŠ¨é‡Šæ”¾
 private:
 	shared_ptr<vector<string>> data;
 };
