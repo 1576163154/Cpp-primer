@@ -24,6 +24,8 @@ public:
 	}
 	
 	friend void swap(HasPtr&,HasPtr&);//friend 确保该方法能访问private成员
+
+	friend bool operator<(HasPtr&, HasPtr&);//重载 < 运算符
 	
 	~HasPtr() {
 		delete ps;
@@ -37,6 +39,11 @@ inline void swap(HasPtr& one,HasPtr& two){
 	using std::swap;
 	swap(one.ps,two.ps);//交换指针
 	swap(one.i,two.i);
+	cout << "调用自定义 swap （）" << endl;
+}
+
+inline bool operator<(HasPtr& one, HasPtr& two) {
+	return *one.ps < *two.ps;
 }
 
 //行为像值的类，智能指针
@@ -56,5 +63,18 @@ private:
 
 void main() {
 	string s = "2323";
-	string* s = new string(s);
+	string* ws = new string("222");
+
+	string o = "one";
+	string t = "two";
+	HasPtr one(o);
+	HasPtr two(t);
+	
+
+
+	bool flag = one < two ? true : false;
+	vector<HasPtr> vHP = { HasPtr(string("one")),HasPtr(string("awo")) ,HasPtr(string("three")) ,HasPtr(string("four")) };
+	using std::sort;
+	sort(vHP.begin(), vHP.end());//sort 过程中，并未调用自定义swap方法
+	swap(one, two);
 }
