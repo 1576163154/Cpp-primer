@@ -1,9 +1,10 @@
-#include<string>
+ï»¿#include<string>
 #include<utility>
 #include<memory>
 using std::string;
 using std::pair;
 using std::allocator;
+
 class StrVec {
 
 
@@ -15,14 +16,39 @@ private:
 	static allocator<string> alloc;
 	
 	void free(){
+		if (elements != nullptr) {
+			for (auto p = first_free; p != elements; ) {
+				p--;
+				alloc.destroy(p);//ä»åå¾€å‰ä¾æ¬¡é”€æ¯å¯¹è±¡
+				
+			}
+			alloc.deallocate(elements,cap - elements);//ä¹‹åé‡Šæ”¾å†…å­˜
+		}
 	}
 
 	void reallocate(){
+		auto newCap = size() > 0 ? 2 * size() : 1;
+		auto newData = alloc.allocate(newCap);
+		auto dest = newData;
+		auto elem = elements;
 
+		for (size_t i = 0; i != size(); ++i) {
+			alloc.construct(dest, std::move(*elem));//std::moveä¸æ‹·è´stringï¼Œè€Œæ˜¯è®©destæ¥ç®¡
+			dest++;
+			elem++;
+		}
+		free();
+		elements = newData;
+		first_free = dest;
+		cap = elements + newCap;
 	}
 
+	//æ‹·è´ä¸€ä»½vector<string>
+	//return {begin,end}
 	pair<string*, string*> alloc_n_copy(const string* first, const string* first_free) {
-
+		auto begin = alloc.allocate(first_free - first);//åˆ†é…first_free - first ä¸ª string æ‰€éœ€ç©ºé—´ï¼Œå¹¶è¿”å›é¦–åœ°å€
+		auto end = std::uninitialized_copy(first, first_free, begin);//å°†first ~ first_free èŒƒå›´å†…å†…å®¹ æ‹·è´åˆ°begin
+		return{ begin,end};
 	}
 
 	void chk_n_alloc() {
@@ -35,41 +61,45 @@ public:
 	//StrVec() = default;
 	StrVec() : elements(nullptr),first_free(nullptr),cap(nullptr){}
 
-	///////////////////////////¿½±´¿ØÖÆ³ÉÔ±
-	//ÏñÖµĞĞÎª
-	StrVec(const StrVec& sv) : elements(new string(*sv.elements)),first_free(new string(*sv.first_free)),cap(new string(*sv.cap)){}
+	///////////////////////////æ‹·è´æ§åˆ¶æˆå‘˜
+	//åƒå€¼è¡Œä¸º
+	StrVec(const StrVec& sv)  {
+		auto newData = alloc_n_copy(sv.elements, sv.first_free);
+		elements = newData.first;
+		first_free  = newData.second;
+		cap = newData.second;
+	}
 	StrVec& operator=(const StrVec& sv) {
-		//´¦Àí×Ô¸³Öµ
-		auto ele = new string(*sv.elements);
-		auto free = new string(*sv.first_free);
-		auto end = new string(*sv.cap);
+		auto data = alloc_n_copy(sv.elements, sv.first_free);
+		free();
 
-		//ÊÍ·ÅÔ­ÓĞÄÚ´æ
-		delete elements;
-		delete first_free;
-		delete cap;
 
-		elements = ele;
-		first_free = free;
-		cap = end;
+	
+
+		elements = data.first;
+		first_free = data.second;
+		cap = data.second;
+		return *this;
 	}
 
-	//Îö¹¹
+	//ææ„
 	~StrVec() {
+		free();
+
 		delete elements;
 		delete first_free;
 		delete cap;
 
 	}
 
-	/////////////////////////ÆäËû·½·¨
+	/////////////////////////å…¶ä»–æ–¹æ³•
 	void push_back(const string& str) {
-		chk_n_alloc();//¼ì²é
-		alloc.construct(first_free, str);//´´½¨
-		first_free++;//¸üĞÂ
+		chk_n_alloc();//æ£€æŸ¥
+		alloc.construct(first_free, str);//åˆ›å»º
+		first_free++;//æ›´æ–°
 
 	}
-	//const ĞŞÊÎÎŞ·¨ĞŞ¸Ä¶ÔÏó
+	//const ä¿®é¥°æ— æ³•ä¿®æ”¹å¯¹è±¡
 	size_t size() const {
 		//string* s = new string("jfdkjf");
 		//first_free = s;
