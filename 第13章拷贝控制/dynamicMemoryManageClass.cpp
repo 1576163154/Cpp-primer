@@ -1,6 +1,8 @@
 ﻿#include<string>
 #include<utility>
 #include<memory>
+#include<initializer_list>
+#include<algorithm>
 using std::string;
 using std::pair;
 using std::allocator;
@@ -22,8 +24,12 @@ private:
 				alloc.destroy(p);//从后往前依次销毁对象
 				
 			}
+			//另外一种方式
+			//for_each(elements, first_free, [](string& s) {alloc.destroy(&s); });
 			alloc.deallocate(elements,cap - elements);//之后释放内存
 		}
+
+		
 	}
 
 	void reallocate(){
@@ -60,6 +66,13 @@ private:
 public:
 	//StrVec() = default;
 	StrVec() : elements(nullptr),first_free(nullptr),cap(nullptr){}
+
+	StrVec(std::initializer_list<string> l) {
+		auto newData = alloc_n_copy(l.begin(), l.end());
+		elements = newData.first;
+		first_free = newData.second;
+		cap = newData.second;
+	}
 
 	///////////////////////////拷贝控制成员
 	//像值行为
@@ -109,5 +122,24 @@ public:
 	size_t capacity() const {
 		return cap - elements;
 	}
-		
+	
+	//设置容量
+	void reserve(size_t n) {
+		if (n > capacity()) {
+			int newCap = n;
+			auto newData = alloc.allocate(newCap);
+			auto oldEle = elements;
+			auto dest = newData;
+			for (size_t i = 0; i < size(); i++) {
+				alloc.construct(dest, std::move(*oldEle));
+				dest++;
+				oldEle++;
+			}
+
+			free();
+			elements = newData;
+			first_free = dest;
+			cap = elements + newCap;
+		}
+	}
 };
