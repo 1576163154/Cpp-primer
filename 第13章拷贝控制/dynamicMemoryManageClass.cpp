@@ -95,6 +95,36 @@ public:
 		return *this;
 	}
 
+	//定义移动拷贝构造函数
+	StrVec(StrVec&& sv) noexcept : elements(sv.elements),first_free(sv.first_free),cap(sv.cap) {
+		//noexcept 表明不抛出异常（移动到中途，src和dest，此时并不能恢复src
+
+		// 之后*this接管sv
+
+		//修改，便于析构
+		sv.elements = nullptr;
+		sv.first_free = nullptr;
+		sv.cap = nullptr;
+	}
+
+	//移动赋值运算符
+	StrVec& operator=(StrVec&& sv) noexcept {
+		if (this != &sv) {
+			//不是同一个才
+			free();//释放已有元素
+			elements = sv.elements;
+			first_free = sv.first_free;
+			cap = sv.cap;
+
+			//处理移动后源对象
+			sv.elements = nullptr;
+			sv.first_free = nullptr;
+			sv.cap = nullptr;
+
+		}
+		return *this;
+	}
+	
 	//析构
 	~StrVec() {
 		free();
@@ -143,3 +173,23 @@ public:
 		}
 	}
 };
+
+
+struct X
+{
+	int i;//内置类型可以进行移动操作
+	string s;//string 同样定义了移动操作
+};
+
+struct hasX {
+	X mem;
+	//由于成员mem的成员都具有移动操作
+	//故编译器为其合成 移动构造成员
+};
+
+void main() {
+	X x;
+	X x2 = std::move(x);
+	hasX hx;
+	hasX hx2 = std::move(hx);
+}
